@@ -10,6 +10,12 @@ const {v4: uuidv4} = require('uuid'); //universely unique identifier
 
 app.use(bodyParser.json()); //this looks for incoming data
 
+const Redis = require("redis");
+
+const redisClient = Redis.createClient({
+    url: "redis://127.0.0.1:6379"
+});
+
 app.get("/", (request, response) => {
     response.send("Hello Gary");
 }
@@ -30,6 +36,7 @@ app.post('/login', (req, res) =>{
 });
 
 app.listen(port, () => {
+    redisClient.connect();
     console.log("listening");
 });
 
