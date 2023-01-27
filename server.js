@@ -10,6 +10,8 @@ const {v4: uuidv4} = require('uuid'); //universely unique identifier
 
 app.use(bodyParser.json()); //this looks for incoming data
 
+app.use(express.static("public")); //  tells where frontend will go (public folder)
+
 const Redis = require("redis");
 
 const redisClient = Redis.createClient({
@@ -17,15 +19,16 @@ const redisClient = Redis.createClient({
 });
 
 app.get("/", (request, response) => {
-    response.send("Hello Gary");
+    response.send("Hello Gary!");
 }
 );
 
-app.post('/login', (req, res) =>{
+app.post('/login', async(req, res) =>{
     const loginUser = req.body.userName;
     const loginPassword = req.body.password; //access the password data in the body
     console.log('Login username: ' +loginUser);
-    if (loginUser == "gai18003@byui.edu" && loginPassword == "Radar123"){
+    const correctPassword = await redisClient.hGet('UserMap', loginUser);
+    if (loginPassword==correctPassword){
         const loginToken = uuidv4();
         res.send(loginToken)
 
