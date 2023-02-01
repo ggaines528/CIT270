@@ -51,7 +51,7 @@ function userlogin(){
         url: '/login',
         data: JSON.stringify({userName, password}),
         success: function(data) {
-            window.location.href = "/timer.html#"+data;//add the token to the url
+            window.location.href = "/timer.html"; //add the token to the url
         },
         contentType: "application/json",
         dataType: 'text'

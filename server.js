@@ -14,6 +14,9 @@ app.use(express.static("public")); //  tells where frontend will go (public fold
 
 const Redis = require("redis");
 
+const cookieParser = require("cookie-parser");
+app.use(cookieParser());
+
 const redisClient = Redis.createClient({
     url: "redis://127.0.0.1:6379"
 });
@@ -23,8 +26,9 @@ app.get("/", (request, response) => {
 }
 );
 
-app.get("/validate/:loginToken", async(req, res) =>{
-    const loginToken = req.params.loginToken;
+app.get("/validate/", async(req, res) =>{
+    const loginToken = req.cookies.stedicookie;
+    console.log("loginToken", loginToken);
     const loginUser = await redisClient.hGet('TokenMap', loginToken);
     res.send(loginUser);
 })
