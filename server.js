@@ -17,9 +17,22 @@ const Redis = require("redis");
 const cookieParser = require("cookie-parser");
 app.use(cookieParser());
 
+app.use(async function(req, res, next) {
+    var cookie = req.cookies.stedicookie;
+    if(cookie === undefined && !req.url.includes("login") && !req.url.includes("html")){
+        res.status(401);
+        res.send("no cookie");
+    }
+    else {
+        //this means cookie was already present
+        res.status(200);
+        next();
+    }
+})
+
 app.post('/rapidsteptest', async(req,res)=>{
     const steps = req.body;
-    await redisClient.zAdd('steps', steps, 0);
+    await redisClient.zAdd('Steps',[{score:0,value:JSON.stringify(steps)}]);
     console.log("Steps", steps);
     res.send("Saved");
 });
