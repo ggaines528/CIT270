@@ -1,10 +1,11 @@
+
 const bodyParser = require("body-parser");
 const { response } = require("express");
 const express = require ("express");
 const { request } = require("http");
 const app = express();
 
-const port = 3000;
+const port = 443;
 
 const {v4: uuidv4} = require('uuid'); //universely unique identifier
 
@@ -16,6 +17,10 @@ const Redis = require("redis");
 
 const cookieParser = require("cookie-parser");
 app.use(cookieParser());
+
+const https = require("https");
+
+const fs = require("fs");
 
 app.use(async function(req, res, next) {
     var cookie = req.cookies.stedicookie;
@@ -69,8 +74,21 @@ app.post('/login', async(req, res) =>{
     }
 });
 
-app.listen(port, () => {
-    redisClient.connect();
-    console.log("listening");
-});
+// app.listen(port, () => {
+//   redisClient.connect();//
+//     console.log("listening");
+// });
 
+
+https.createServer(
+    {
+        key: fs.readFileSync("./server.key"),
+        cert: fs.readFileSync("./server.cert"),
+        ca: fs.readFileSync("./chain.pem")
+
+},
+app
+).listen(port, () =>{
+    redisClient.connect()
+    console.log('Listening on port: ' +port);
+});
