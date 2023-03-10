@@ -1,0 +1,35 @@
+apiVersion: apps/vs
+kind: Deployment
+metadata:
+  name: cit20garyservice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cit270garyservice
+  template:
+    metadata:
+      name: cit270garyservice
+      labels:
+        app: cit270garyservice
+    spec:
+      containers:
+       - name: cit270garyservice
+        image: cit-270-kubernetes/gary-api
+        volumeMounts: 
+         - name: ssl
+           mountPath: "/etc/letsencrypt/live/SSL"
+      command: ["npm"]
+      args: ["run","start"]
+      resources:
+        requests:
+          cpu: 0.125
+          memeory: 5000Mi
+        limits:
+          cpu: 0.125
+          memory: 600Mi
+        imagePullPolicy: Always
+      volumes:
+       - name: ssl
+        secret: 
+          secretName: garycerts
