@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: cit270garyservice
-        image: gcr.io/cit270-kubernetes/gary-api
+        image: gcr.io/cit-270-kubernetes/gary-api
         volumeMounts: 
         - name: ssl
           mountPath: "/etc/letsencrypt/live/garygaines.cit270.com/"
