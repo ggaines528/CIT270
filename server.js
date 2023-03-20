@@ -43,7 +43,7 @@ app.post('/rapidsteptest', async(req,res)=>{
 });
 
 const redisClient = Redis.createClient({
-    url: "redis://default:tT246SyaH8qaCHW6@redis-stedi-gary:6379"
+    url: "redis://default:tT246SyaH8qaCHW6@10.12.14.230:6379"
 });
 
 app.get("/", (request, response) => {
