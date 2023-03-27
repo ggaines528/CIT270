@@ -5,7 +5,7 @@ const express = require ("express");
 const { request } = require("http");
 const app = express();
 
-const port = 443;
+const port = 3000;
 
 const {v4: uuidv4} = require('uuid'); //universely unique identifier
 
@@ -42,9 +42,12 @@ app.post('/rapidsteptest', async(req,res)=>{
     res.send("Saved");
 });
 
+//  -- password default:tT246SyaH8qaCHW6@
+
 const redisClient = Redis.createClient({
-    url: "redis://default:tT246SyaH8qaCHW6@10.12.14.230:6379"
+    url: "redis://127.0.0.1:3000"
 });
+
 
 app.get("/", (request, response) => {
     response.send("Hello Gary!");
@@ -74,21 +77,8 @@ app.post('/login', async(req, res) =>{
     }
 });
 
-// app.listen(port, () => {
-//   redisClient.connect();//
-//     console.log("listening");
-// });
 
-
-https.createServer(
-    {
-        key: fs.readFileSync("/etc/letsencrypt/live/garygaines.cit270.com/privkey.pem"),
-        cert: fs.readFileSync("/etc/letsencrypt/live/garygaines.cit270.com/cert.pem"),
-        ca: fs.readFileSync("/etc/letsencrypt/live/garygaines.cit270.com/fullchain.pem")
-        
-},
-app
-).listen(port, () =>{
+app.listen(port, () => {
     redisClient.connect()
-    console.log('Listening on port: ' +port);
+    console.log("listening");
 });
